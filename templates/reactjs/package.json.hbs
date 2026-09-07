@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+{{#if author}}
+  "author": "{{{author}}}",
+{{/if}}
   "scripts": {
     "dev": "vite",
     "prebuild": "tsc",

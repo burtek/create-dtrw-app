@@ -2,7 +2,9 @@
   "name": "{{ packageName }}",
   "version": "1.0.0",
   "description": "",
-  "author": "",
+{{#if author}}
+  "author": "{{{author}}}",
+{{/if}}
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
