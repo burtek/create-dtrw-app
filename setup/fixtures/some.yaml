@@ -1,0 +1,53 @@
+# Sample YAML file for parsing tests
+name: "sample-app"
+version: 1.2.3
+enabled: true
+port: 8080
+
+owner:
+  name: "Jane Doe"
+  email: "jane@example.com"
+  active: true
+
+tags:
+  - backend
+  - api
+  - demo
+
+servers:
+  - host: "localhost"
+    port: 8081
+    ssl: false
+  - host: "api.example.com"
+    port: 443
+    ssl: true
+
+settings:
+  retries: 3
+  timeout: 30
+  env: prod
+  features:
+    debug: false
+    cache: true
+    allowed_hosts:
+      - "localhost"
+      - "example.com"
+
+nested:
+  list:
+    - key: first
+      value: 100
+    - key: second
+      value: 200
+
+notes: |
+  This is a block scalar.
+  It preserves new lines.
+
+multiline_list: [
+  "one",
+  "two",
+  "three"
+]
+
+empty_value: null

@@ -1,0 +1,39 @@
+# Should be run from the workspace rot using
+# docker build -f packages/{{ packageName }}/Dockerfile . 
+
+FROM node:26.8.1-alpine AS build
+
+WORKDIR /app
+
+RUN apk add --no-cache python3 py3-pip build-base
+RUN npm i -g corepack
+RUN corepack enable
+
+COPY scripts/ ./scripts/
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/{{ packageName }}/package.json ./packages/{{ packageName }}/package.json
+
+RUN corepack install
+RUN pnpm install --frozen-lockfile
+
+COPY packages/{{ packageName }}/ ./packages/{{ packageName }}/
+
+RUN pnpm run validate
+
+WORKDIR /app/packages/{{ packageName }}
+
+RUN pnpm build
+RUN pnpm assemble
+
+FROM node:26.8.1-alpine AS runtime
+
+ARG COMMIT_SHA=dev
+
+ENV COMMIT_SHA=$COMMIT_SHA
+ENV NODE_ENV=production
+
+WORKDIR /app
+
+COPY --from=build /app/packages/{{ packageName }}/.assembled/ ./
+
+CMD node --enable-source-maps dist/index.mjs

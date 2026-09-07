@@ -1,0 +1,22 @@
+packages:
+  - "packages/*"
+minimumReleaseAge: 0
+catalog:
+  "@dtrw/eslint-config": ~7.1.0
+  "@types/node": ^26.1.2
+  cross-env: "^10.1.0"
+  eslint: ^10.7.0
+  nodemon: ^3.1.14
+  tsdown: ^0.23.0
+  tsx: ^4.23.1
+  typescript: ^6.0.3
+  vite: ^8.1.5
+  vitest: ^5.0.0
+allowBuilds:
+  core-js: true
+  esbuild: true
+  unrs-resolver: true
+injectWorkspacePackages: true
+peerDependencyRules:
+  allowedVersions:
+    "eslint-plugin-jsx-a11y>eslint": "10" # eslint-plugin-jsx-a11y development is stalled and technically requires eslint<10 but works good with eslint 10

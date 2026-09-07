@@ -1,0 +1,35 @@
+# Should be run from the workspace rot using
+# docker build -f packages/{{ packageName }}/Dockerfile . 
+
+FROM node:26.8.1-slim AS build
+
+WORKDIR /app
+
+RUN npm i -g corepack
+RUN corepack enable
+
+COPY scripts/ ./scripts/
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/{{ packageName }}/package.json ./packages/{{ packageName }}/package.json
+
+RUN corepack install
+RUN pnpm install --frozen-lockfile
+
+COPY packages/{{ packageName }}/ ./packages/{{ packageName }}/
+
+RUN pnpm run validate
+
+WORKDIR /app/packages/{{ packageName }}
+
+ARG COMMIT_SHA=dev
+ENV VITE_COMMIT=$COMMIT_SHA
+
+RUN pnpm build
+
+FROM nginx:1.31.5-alpine AS runtime
+
+# envsubst trick to escape nginx variables
+ENV DOLLAR='$'
+
+COPY packages/{{ packageName }}/nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY --from=build /app/packages/{{ packageName }}/dist/ /usr/share/nginx/html/

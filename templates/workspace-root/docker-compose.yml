@@ -1,0 +1,8 @@
+services: {}
+
+networks:
+  default:
+    internal: true
+  apps:
+    external: true
+    name: apps

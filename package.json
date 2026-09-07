@@ -1,0 +1,46 @@
+{
+  "name": "@dtrw/create-dtrw-app",
+  "version": "1.0.0",
+  "description": "CLI for creating and managing @dtrw monorepos",
+  "license": "MIT",
+  "dependencies": {
+    "@commander-js/extra-typings": "^15.0.0",
+    "commander": "^15.0.0",
+    "empathic": "^2.0.1",
+    "handlebars": "^4.7.9",
+    "obug": "^2.1.4",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.2",
+    "commit-and-tag-version": "^13.0.0",
+    "tsdown": "^0.23.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.0",
+    "vitest-fs": "^0.1.1"
+  },
+  "type": "module",
+  "bin": {
+    "create-dtrw-app": "dist/create.mjs",
+    "dtrw": "dist/dtrw.mjs"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev:create": "tsx --conditions import src/cli/create/index.ts",
+    "dev:dtrw": "tsx --conditions import src/cli/dtrw/index.ts",
+    "test": "vitest run",
+    "e2e": "pnpm build && ./test/run.sh --cli=dist/cli.js --suits=./test/suites.yml --mktemp",
+    "release": "commit-and-tag-version"
+  },
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=8"
+  }
+}
