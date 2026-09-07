@@ -3,7 +3,7 @@ import { Preset } from "./internal/preset.js";
 import { NodeJSSQLitePreset } from "./presets/nodejs-sqlite.js";
 import { NodeJSPreset } from "./presets/nodejs.js";
 import { ReactPreset } from "./presets/react.js";
-import { WorkspaceRootPreset } from "./presets/workspace-root.preset.js";
+import { WorkspaceRootPreset } from "./presets/workspace-root.js";
 
 /*********************** PRESETS **********************/
 
