@@ -1,8 +1,10 @@
+import { readFile, writeFile } from "node:fs/promises";
 import { ProjectContext } from "../../core/context.js";
 import { ghResult$, gitResult$ } from "../../external-tools/index.js";
 import { getPreset } from "../../presets/index.js";
 import { exec } from "../../utils/exec.js";
 import { Logger } from "../../utils/log.js";
+import { join } from "node:path";
 
 export async function executeCreate(
     context: ProjectContext,
@@ -21,6 +23,12 @@ export async function executeCreate(
         logger.debug('executing preset: %s', preset);
         await getPreset(preset).execute(context, name);
     }
+
+    logger.debug('writing generator metadata to root package.json');
+    const rootPkgJson = join(context.paths.projectRoot, 'package.json');
+    const pkgJson = JSON.parse(await readFile(rootPkgJson, 'utf8'));
+    pkgJson['create-dtrw-app'].templatesUsed = Object.fromEntries(presetsToInclude);
+    await writeFile(rootPkgJson, JSON.stringify(pkgJson, undefined, 2), 'utf8');
 
     const userAgent = process.env.npm_config_user_agent?.split(' ')[0];
     const pkgManager = ((): [manager: string, installArgs: string[], testsArgs: string[]] => {

@@ -12,7 +12,7 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
-    "@dtrw/create-dtrw-app": "^1.0.0",
+    "@dtrw/create-dtrw-app": "{{ generatorVersion }}",
     "@playwright/test": "1.63.0",
     "@types/node": "catalog:",
     "commit-and-tag-version": "^13.1.0",
@@ -43,5 +43,9 @@
   "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
   "engines": {
     "node": "^26.5.0"
+  },
+  "create-dtrw-app": {
+    "generatorVersion": "{{ generatorVersion }}",
+    "templatesUsed": {}
   }
 }

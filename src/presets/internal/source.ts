@@ -28,6 +28,7 @@ interface TemplateSourceParams {
         author: string | undefined; // Name <email>
 
         packageName: string;
+        generatorVersion: string;
     };
 }
 export class TemplateSource implements PresetSource<TemplateSourceParams> {
@@ -102,7 +103,8 @@ export class TemplateSource implements PresetSource<TemplateSourceParams> {
                 : undefined,
             repo: gh.status === 'fulfilled' && gh.value.authenticated
                 ? `${gh.value.username}/${context.scaffoldOptions.projectLongName}`
-                : undefined
+                : undefined,
+            generatorVersion: context.generator.version
         } satisfies Partial<TemplateSourceParams['substitutions']>
     }
 }
