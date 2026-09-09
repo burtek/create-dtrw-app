@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "semanticCommits": "enabled",
+  "labels": ["dependencies"],
+  "assignees": ["@burtek"],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "addLabels": ["security"],
+    "assignees": ["@burtek"]
+  },
+  "rebaseWhen": "behind-base-branch",
+  "postUpdateOptions": ["pnpmDedupe"],
+  "packageRules": [
+    {
+      "matchDepTypes": ["peerDependencies"],
+      "enabled": false
+    },
+//    {
+//      "matchUpdateTypes": ["patch"],
+//      "automerge": true,
+//      "automergeType": "pr",
+//      "ignoreTests": false
+//    },
+    {
+      "matchUpdateTypes": ["major"],
+      "labels": ["UPDATE-MAJOR"]
+    }
+  ]
+}
