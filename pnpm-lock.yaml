@@ -180,7 +180,7 @@ importers:
         version: 4.7.9
       obug:
         specifier: ^2.1.4
-        version: 2.1.4
+        version: 2.2.1
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
@@ -1050,8 +1050,8 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  obug@2.1.4:
-    resolution: {integrity: sha512-4a+OsYv9UktOJKE+l1A4OufDgdRF9PifWj+tJnHURo/P+WOxpG4GzUFL9qCalmWauao6ogiG+QvnCovwPoyAWA==}
+  obug@2.2.1:
+    resolution: {integrity: sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q==}
     engines: {node: '>=12.20.0'}
 
   p-limit@2.3.0:
@@ -2023,7 +2023,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  obug@2.1.4: {}
+  obug@2.2.1: {}
 
   p-limit@2.3.0:
     dependencies:
@@ -2075,7 +2075,7 @@ snapshots:
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
-      obug: 2.1.4
+      obug: 2.2.1
       rolldown: 1.2.7
       yuku-ast: 0.9.3
       yuku-codegen: 0.9.3
@@ -2160,7 +2160,7 @@ snapshots:
       empathic: 2.0.1
       hookable: 6.1.1
       import-without-cache: 0.4.0
-      obug: 2.1.4
+      obug: 2.2.1
       picomatch: 4.0.7
       rolldown: 1.2.7
       rolldown-plugin-dts: 0.28.5(rolldown@1.2.7)(typescript@6.0.3)
@@ -2224,7 +2224,7 @@ snapshots:
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
       magic-string: 1.2.3
-      obug: 2.1.4
+      obug: 2.2.1
       picomatch: 4.0.7
       std-env: 4.2.0
       tinybench: 6.1.4
