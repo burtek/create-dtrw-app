@@ -1,7 +1,7 @@
 # Should be run from the workspace rot using
 # docker build -f packages/{{ packageName }}/Dockerfile . 
 
-FROM node:26.8.1-alpine AS build
+FROM node:26.9.0-alpine AS build
 
 WORKDIR /app
 
@@ -25,7 +25,7 @@ WORKDIR /app/packages/{{ packageName }}
 RUN pnpm build
 RUN pnpm assemble
 
-FROM node:26.8.1-alpine AS runtime
+FROM node:26.9.0-alpine AS runtime
 
 ARG COMMIT_SHA=dev
 
