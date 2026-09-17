@@ -61,9 +61,6 @@ jobs:
     name: Run Playwright tests
     runs-on: ubuntu-latest
     needs: [get-playwright-version]
-    container:
-      image: mcr.microsoft.com/playwright:v${{ needs.get-playwright-version.outputs.playwrightversion }}-noble
-      options: --user 1001
     steps:
       - id: checkout
         name: Checkout code
@@ -74,7 +71,10 @@ jobs:
         with:
           runtime: node@$\{{ env.NODE_VERSION }}
           cache: true
-      - id: run-playwirght
+      - id: setup-playwright
+        name: Setup Playwright
+        run: pnpm exec playwright install --with-deps
+      - id: run-playwright
         name: Run Playwright tests
         run: pnpm exec playwright test
       - id: upload-playwright-report
