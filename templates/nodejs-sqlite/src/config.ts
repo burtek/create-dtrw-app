@@ -12,7 +12,7 @@ const envSchema = z.object({
     PORT: z.coerce.number().default(DEFAULT_PORT),
     LOGS_FILE: z.string().optional(),
     DB_FILE_NAME: z.string().nonempty().transform(path => resolve(import.meta.dirname, '..', path)),
-    DB_MIGRATIONS_FOLDER: z.string().nonempty().transform(path => resolve(import.meta.dirname, '..', path)),
+    DB_MIGRATIONS_FOLDER: z.string().nonempty().transform(path => resolve(import.meta.dirname, '..', path))
 });
 /* eslint-enable @typescript-eslint/naming-convention */
 
