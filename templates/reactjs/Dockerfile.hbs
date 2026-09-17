@@ -13,7 +13,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/{{ packageName }}/package.json ./packages/{{ packageName }}/package.json
 
 RUN corepack install
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --filter={{ packageName }}
 
 COPY packages/{{ packageName }}/ ./packages/{{ packageName }}/
 
@@ -26,7 +26,7 @@ ENV VITE_COMMIT=$COMMIT_SHA
 
 RUN pnpm build
 
-FROM nginx:1.31.5-alpine AS runtime
+FROM nginx:1.31.6-alpine AS runtime
 
 # envsubst trick to escape nginx variables
 ENV DOLLAR='$'
