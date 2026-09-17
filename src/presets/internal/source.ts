@@ -33,17 +33,30 @@ interface TemplateSourceParams {
 }
 export class TemplateSource implements PresetSource<TemplateSourceParams> {
     private static HBS_EXT = '.hbs';
-
-    constructor(private readonly templateName: string) {}
+    
+    private readonly templateNames: string[]
+    constructor(templateName: string | string[]) {
+        this.templateNames = Array.isArray(templateName) ? templateName : [templateName];
+    }
     
     async execute(context: ProjectContext, targetDir: string, params: TemplateSourceParams) {
-        const templatePath = resolve(dirname(context.generator.libRoot), 'templates', this.templateName);
+        const templatePaths = this.templateNames.map(templateName => {
+            return this.resolveTemplate(context, templateName);
+        });
+
+        for (const templatePath of templatePaths) {
+            await this.copyDirectory(templatePath, targetDir, params.substitutions);
+        }
+    }
+
+    private resolveTemplate(context: ProjectContext, templateName: string) {
+        const templatePath = resolve(dirname(context.generator.libRoot), 'templates', templateName);
 
         if (!existsSync(templatePath)) {
-            throw new Error(`Template ${this.templateName} not found at ${templatePath}`);
+            throw new Error(`Template ${templateName} not found at ${templatePath}`);
         }
-        
-        await this.copyDirectory(templatePath, targetDir, params.substitutions);
+
+        return templatePath;
     }
 
     private async copyDirectory(sourceDir: string, targetDir: string, substitutions: Record<string, unknown>) {
