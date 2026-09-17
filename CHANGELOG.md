@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.2.1](https://github.com/burtek/create-dtrw-app/compare/v1.2.0...v1.2.1) (2026-09-17)
+
+### Bug Fixes
+
+* lint issue in nodejs-sqlite template ([d5c83c8](https://github.com/burtek/create-dtrw-app/commit/d5c83c8a3eb6d3416a8f79233b59491131ed9c24))
+
 ## [1.2.0](https://github.com/burtek/create-dtrw-app/compare/v1.1.1...v1.2.0) (2026-09-17)
 
 ### Features
