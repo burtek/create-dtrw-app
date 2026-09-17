@@ -28,7 +28,7 @@ export class ReactPreset extends Preset {
             {
                 image: `ghcr.io/${(await ghResult$).username ?? '<<FIXME>>'}/${projectContext.scaffoldOptions.projectLongName}/${packageName}:\${VERSION_TAG}`,
                 container_name: `${projectContext.scaffoldOptions.projectShortName}_${packageName}`,
-                environment: { '#API_URL': 'http://helloworld_backend:4000' },
+                environment: { 'API_URL': `http://${projectContext.scaffoldOptions.projectShortName}_backend:4000` },
                 restart: 'unless-stopped',
                 healthcheck: {
                     test: 'curl -f http://localhost/',

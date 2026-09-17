@@ -29,7 +29,7 @@ export class NodeJSPreset extends Preset {
                 image: `ghcr.io/${(await ghResult$).username ?? '<<FIXME>>'}/${projectContext.scaffoldOptions.projectLongName}/${packageName}:\${VERSION_TAG}`,
                 container_name: `${projectContext.scaffoldOptions.projectShortName}_${packageName}`,
                 environment: { PORT: 4000 },
-                env_file: [{ path: '.backend.env', required: false }],
+                env_file: [{ path: `.${projectContext.scaffoldOptions.projectShortName}.env`, required: false }],
                 restart: 'unless-stopped',
                 healthcheck: {
                     test: 'wget --no-verbose --tries=1 --spider http://127.0.0.1:4000/health || exit 1',
