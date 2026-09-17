@@ -11,7 +11,7 @@
   "main": "dist/index.mjs",
   "scripts": {
     "dev:tsx": "tsx watch --env-file=.env.development --clear-screen=false src/server.ts",
-    "dev:typecheck": "tsc --watch",
+    "dev:typecheck": "tsc --watch --preserveWatchOutput",
     "prebuild": "tsc",
     "build": "tsdown",
     "assemble": "pnpm pm --filter . --prod deploy .assembled",
@@ -28,7 +28,7 @@
     "fastify-raw-body": "^6.0.0",
     "fastify-type-provider-zod": "^7.0.0",
     "validator": "^13.15.35",
-    "zod": "^4.4.3"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@dtrw/eslint-config": "catalog:",

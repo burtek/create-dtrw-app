@@ -9,6 +9,7 @@ import { errorHandler } from './errors/handler.js';
 import healthController from './health/health.controller.js';
 import healthService from './health/health.service.js';
 import helloWorldController from './helloworld/helloworld.controller.js';
+import helloworldService from './helloworld/helloworld.service.js';
 
 
 export async function createApp(opts: FastifyServerOptions = {}) {
@@ -32,6 +33,7 @@ export async function createApp(opts: FastifyServerOptions = {}) {
     // Services
     createPluginRegistry(app)
         .use(healthService)
+        .use(helloworldService)
         .registerAll();
 
     // Controllers

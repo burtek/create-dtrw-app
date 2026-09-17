@@ -9,5 +9,16 @@ export default defineConfig({
     dts: true,
     sourcemap: true,
     tsconfig: 'tsconfig.build.json',
-    format: 'esm'
+    format: 'esm',
+    unbundle: true,
+    copy: [
+        {
+            from: [
+                'src/assets/**/*',
+                '!src/assets/**/*.ts'
+            ],
+            to: 'dist',
+            flatten: false
+        }
+    ]
 });
