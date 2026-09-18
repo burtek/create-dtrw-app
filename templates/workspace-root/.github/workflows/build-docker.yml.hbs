@@ -102,6 +102,12 @@ jobs:
             org.opencontainers.image.revision=$\{{ inputs.ref }}
             org.opencontainers.image.created=$\{{ steps.meta.outputs.created }}
             org.opencontainers.image.licenses=MIT
+            ovh.dtrw.sms.managed=true
+            ovh.dtrw.sms.project.name={{ shortName }}
+            ovh.dtrw.sms.project.description={{ capitalizeFirstLetter shortName }}
+            ovh.dtrw.sms.project.slug={{ shortName }}
+            ovh.dtrw.sms.project.app.name=$\{{ steps.package-name.outputs.package-name }}
+            ovh.dtrw.sms.project.app.slug={{ shortName }}-$\{{ steps.package-name.outputs.package-name }}
           tags: |
             ghcr.io/$\{{ github.repository }}/$\{{ steps.package-name.outputs.package-name }}:$\{{ inputs.ref }}
             ghcr.io/$\{{ github.repository }}/$\{{ steps.package-name.outputs.package-name }}:$\{{ inputs.version }}
