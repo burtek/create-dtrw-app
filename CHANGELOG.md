@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.1](https://github.com/burtek/create-dtrw-app/compare/v1.3.0...v1.3.1) (2026-09-22)
+
+### Bug Fixes
+
+* **template-deps:** update node.js to v26.9.0 ([#5](https://github.com/burtek/create-dtrw-app/issues/5)) ([0557803](https://github.com/burtek/create-dtrw-app/commit/0557803bc220896492b71286beff6510f5c9e263))
+
 ## [1.3.0](https://github.com/burtek/create-dtrw-app/compare/v1.2.1...v1.3.0) (2026-09-18)
 
 ### Features
