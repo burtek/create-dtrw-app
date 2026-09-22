@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.3](https://github.com/burtek/create-dtrw-app/compare/v1.3.2...v1.3.3) (2026-09-22)
+
+### Bug Fixes
+
+* **node-sqlite:** add missing docker-compose file env and volumes ([a928a57](https://github.com/burtek/create-dtrw-app/commit/a928a57b65ff585c32748812aca0e5220b7ea918))
+* **workspace-root:** repository in package.json ([dc453d1](https://github.com/burtek/create-dtrw-app/commit/dc453d15c59f63d2b751270415ea2bdb3545b58a))
+
 ## [1.3.2](https://github.com/burtek/create-dtrw-app/compare/v1.3.1...v1.3.2) (2026-09-22)
 
 ### Bug Fixes
