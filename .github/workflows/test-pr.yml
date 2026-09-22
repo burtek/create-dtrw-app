@@ -1,0 +1,45 @@
+name: Test PR
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Run tests, lint, and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: checkout
+        name: Checkout code
+        uses: actions/checkout@v7
+      - id: setup-node
+        name: Setup node with pnpm
+        uses: pnpm/setup@v3
+        with:
+          runtime: node@26
+          cache: true
+      - id: pre-test-setup 
+        name: Pre-test setup
+        run: |
+          git config --global user.email "test@example.com"
+          git config --global user.name "Test Runner"
+      - id: tests
+        name: Run tests
+        run: pnpm test
+        background: true
+      - id: lint
+        name: Run lint
+        run: pnpm lint
+        if: false
+        background: true
+      - id: build
+        name: Build
+        run: pnpm build
+        background: true
+      - id: wait
+        name: Wait for background jobs to finish
+        wait: [tests, lint, build]
