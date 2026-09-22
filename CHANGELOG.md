@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.2](https://github.com/burtek/create-dtrw-app/compare/v1.3.1...v1.3.2) (2026-09-22)
+
+### Bug Fixes
+
+* **template-deps:** update dotenv, pnpm, pnpm/setup action ([b93f051](https://github.com/burtek/create-dtrw-app/commit/b93f0517c8e244d9445dc2a6d8382515a587cb5f))
+
 ## [1.3.1](https://github.com/burtek/create-dtrw-app/compare/v1.3.0...v1.3.1) (2026-09-22)
 
 ### Bug Fixes
