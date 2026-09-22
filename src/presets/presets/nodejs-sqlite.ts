@@ -33,8 +33,9 @@ export class NodeJSSQLitePreset extends Preset {
             {
                 image: `ghcr.io/${(await ghResult$).username ?? '<<FIXME>>'}/${projectContext.scaffoldOptions.projectLongName}/${packageName}:\${VERSION_TAG}`,
                 container_name: `${projectContext.scaffoldOptions.projectShortName}_${packageName}`,
-                environment: { PORT: 4000 },
+                environment: { PORT: 4000, DB_FILE_NAME: '/data/sqlite.db' },
                 env_file: [{ path: `.${projectContext.scaffoldOptions.projectShortName}.env`, required: false }],
+                volumes: ['./sqlite-data:/data'],
                 restart: 'unless-stopped',
                 healthcheck: {
                     test: 'wget --no-verbose --tries=1 --spider http://127.0.0.1:4000/health || exit 1',
