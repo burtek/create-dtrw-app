@@ -18,6 +18,12 @@
       "matchDepTypes": ["peerDependencies"],
       "enabled": false
     },
+    {
+      "matchFileNames": ["templates/**/*"],
+      "labels": ["template-dependencies"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "template-deps"
+    },
 //    {
 //      "matchUpdateTypes": ["patch"],
 //      "automerge": true,
