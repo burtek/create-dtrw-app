@@ -8,7 +8,7 @@
     "commander": "^15.0.0",
     "empathic": "^2.0.1",
     "handlebars": "^4.7.9",
-    "obug": "^2.1.4",
+    "obug": "^3.0.0",
     "yaml": "^2.9.0"
   },
   "devDependencies": {
