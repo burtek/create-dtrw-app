@@ -30,14 +30,6 @@ export class ReactPreset extends Preset {
                 container_name: `${projectContext.scaffoldOptions.projectShortName}_${packageName}`,
                 environment: { 'API_URL': `http://${projectContext.scaffoldOptions.projectShortName}_backend:4000` },
                 restart: 'unless-stopped',
-                healthcheck: {
-                    test: 'curl -f http://localhost/',
-                    interval: '30s',
-                    timeout: '5s',
-                    retries: 2,
-                    start_period: '5s',
-                    start_interval: '5s'
-                },
                 networks: ['default', 'apps']
             }
         )

@@ -37,14 +37,6 @@ export class NodeJSSQLitePreset extends Preset {
                 env_file: [{ path: `.${projectContext.scaffoldOptions.projectShortName}.env`, required: false }],
                 volumes: ['./sqlite-data:/data'],
                 restart: 'unless-stopped',
-                healthcheck: {
-                    test: 'wget --no-verbose --tries=1 --spider http://127.0.0.1:4000/health || exit 1',
-                    interval: '30s',
-                    timeout: '5s',
-                    retries: 2,
-                    start_period: '25s',
-                    start_interval: '10s'
-                },
                 networks: ['default']
             }
         )
