@@ -1,0 +1,119 @@
+name: Handle master push
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  run-checks:
+    name: Run checks
+    uses: ./.github/workflows/_checks.yml
+
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs['release_created'] }}
+      tag_name: ${{ steps.release.outputs['tag_name'] }}
+      version: ${{ steps.release.outputs['version'] }}
+      sha: ${{ steps.release.outputs['sha'] }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
+
+  test-ssh: # to catch ssh issues early, as the job using the connection is late in the workflow
+    name: Test SSH connection to VPS
+    runs-on: ubuntu-latest
+    steps:
+      - id: test-ssh
+        name: Test SSH
+        uses: burtek/setup-ssh@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          user: ${{ secrets.SSH_USER }}
+          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          alias: production
+          test_connection: true
+
+  build-image-for-deploy:
+    name: Build docker image
+    needs: [run-checks, release-please]
+    uses: ./.github/workflows/build-docker.yml
+    if: needs.release-please.outputs.release_created == 'true'
+    permissions:
+      contents: read
+      packages: write
+    with:
+      ref: ${{ needs.release-please.outputs.sha }}
+      push-images: true
+      version: ${{ needs.release-please.outputs.tag_name }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [run-checks, release-please, build-image-for-deploy, test-ssh]
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - id: setup-ssh
+        name: Setup SSH
+        uses: burtek/setup-ssh@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          user: ${{ secrets.SSH_USER }}
+          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          alias: production
+          test_connection: true
+      - id: checkout
+        name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+      - id: deploy
+        name: Deploy docker-compose and start app
+        run: |
+          ssh production '
+              set -eu
+              mkdir -p /apps/${{ needs.run-checks.outputs.APP_NAME }}
+              cd /apps/${{ needs.run-checks.outputs.APP_NAME }}
+              cat > docker-compose.yml.new
+              mv docker-compose.yml.new docker-compose.yml
+              export VERSION_TAG="${{ needs.release-please.outputs.tag_name }}"
+              docker compose pull
+              docker compose up -d
+          ' < docker-compose.yml
+  post-deploy:
+    runs-on: ubuntu-latest
+    needs: [release-please, deploy]
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - id: label-release-pr
+        name: "Add 'autorelease: published' label to the release PR"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          REPO="${{ github.repository }}"
+          RELEASE_SHA="${{ needs.release-please.outputs.sha }}"
+          PR_NUMBER="$(gh api -H "Accept: application/vnd.github+json" "repos/$REPO/commits/$RELEASE_SHA/pulls" --jq 'map(select(.merged_at != null)) | sort_by(.merged_at) | last | .number // empty')"
+          if [ -z "$PR_NUMBER" ]; then
+            echo "No merged PR found for commit $SOURCE_SHA; skipping label."
+            exit 0
+          fi
+          gh pr edit "$PR_NUMBER" --repo "$REPO" --remove-label "autorelease: tagged"
+          gh pr edit "$PR_NUMBER" --repo "$REPO" --add-label "autorelease: published"
+          gh pr comment "$PR_NUMBER" --repo "$REPO" --body "✅ Release ${{ needs.release-please.outputs.tag_name }} has been deployed to production."

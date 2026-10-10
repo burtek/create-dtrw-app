@@ -1,0 +1,91 @@
+name: Checks
+
+on:
+  workflow_call:
+    outputs:
+      APP_NAME:
+        value: $\{{ jobs.metadata.outputs.APP_NAME }}
+      NODE_VERSION:
+        value: $\{{ jobs.metadata.outputs.NODE_VERSION }}
+
+env:
+  APP_NAME: {{{ shortName }}}
+  NODE_VERSION: 26.5
+
+jobs:
+  metadata:
+    name: Output metadata
+    runs-on: ubuntu-latest
+    outputs:
+      APP_NAME: $\{{ steps.metadata.outputs.app_name }}
+      NODE_VERSION: $\{{ steps.metadata.outputs.node_version }}
+    steps:
+      - id: metadata
+        name: Export metadata
+        env:
+          APP_NAME: $\{{ env.APP_NAME }}
+          NODE_VERSION: $\{{ env.NODE_VERSION }}
+        run: |
+          if [ -z "$\{APP_NAME:-}" ] || [ -z "$\{NODE_VERSION:-}" ]; then
+            echo "APP_NAME and NODE_VERSION must be set before exporting workflow metadata." >&2
+            exit 1
+          fi
+          echo "app_name=$\{APP_NAME}" >> "$GITHUB_OUTPUT"
+          echo "node_version=$\{NODE_VERSION}" >> "$GITHUB_OUTPUT"
+  test:
+    name: Run tests, lint, and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: checkout
+        name: Checkout code
+        uses: actions/checkout@v7
+      - id: setup-node
+        name: Setup node with pnpm
+        uses: pnpm/setup@v3
+        with:
+          runtime: node@$\{{ env.NODE_VERSION }}
+          cache: true
+      - id: tests
+        name: Run tests
+        run: pnpm test
+        background: true
+      - id: lint
+        name: Run lint
+        run: pnpm lint
+        background: true
+      - id: build
+        name: Build
+        run: pnpm build
+        background: true
+      - id: wait
+        name: Wait for background jobs to finish
+        wait: [tests, lint, build]
+
+  test-playwright:
+    name: Run Playwright tests
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        name: Checkout code
+        uses: actions/checkout@v7
+      - id: setup-node
+        name: Setup node with pnpm
+        uses: pnpm/setup@v3
+        with:
+          runtime: node@$\{{ env.NODE_VERSION }}
+          cache: true
+      - id: setup-playwright
+        name: Setup Playwright
+        run: pnpm exec playwright install --with-deps
+      - id: run-playwright
+        name: Run Playwright tests
+        run: pnpm exec playwright test
+        timeout-minutes: 5
+      - id: upload-playwright-report
+        uses: actions/upload-artifact@v7
+        if: $\{{ !cancelled() }}
+        with:
+            name: playwright-report
+            path: playwright-report/
+            retention-days: 30

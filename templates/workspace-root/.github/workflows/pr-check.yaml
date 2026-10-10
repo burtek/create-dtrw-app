@@ -1,0 +1,127 @@
+name: Pull request checks
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  run-checks:
+    name: Run checks
+    uses: ./.github/workflows/_checks.yml
+
+  test-build-image:
+    name: Test building docker image
+    uses: ./.github/workflows/build-docker.yml
+    with:
+      version: compose-test # Change in compose-smoke-test.env.VERSION_TAG too
+    permissions:
+      contents: read
+      packages: write
+
+  compose-smoke-test:
+    name: Docker Compose smoke test
+    runs-on: ubuntu-latest
+    needs: test-build-image
+    env:
+      VERSION_TAG: compose-test # Change in test-build-image.with.version too
+    steps:
+      - id: checkout
+        name: Checkout code
+        uses: actions/checkout@v7
+
+      - id: download-image-tars
+        name: Download built images
+        uses: actions/download-artifact@v8
+        with:
+          path: /tmp/images
+          pattern: image-*
+          merge-multiple: true
+
+      - id: load-images
+        name: Load images into local Docker
+        run: |
+          set -eu
+          for f in /tmp/images/*.tar; do
+            docker load -i "$f"
+          done
+      - id: create-apps-network
+        name: Create external apps network
+        run: docker network create apps || true
+
+      - id: compose-up
+        name: Start stack and wait for health
+        run: docker compose up -d --wait --wait-timeout 60
+
+      - id: stability-check
+        name: Ensure containers stay healthy for 30s
+        run: |
+          set -eu
+          services="frontend backend backend-sqlite"
+          for i in $(seq 1 6); do
+            echo "Check $i/6"
+            for svc in $services; do
+              cid="$(docker compose ps -q "$svc")"
+              if [ -z "$cid" ]; then
+                echo "Service $svc has no container id"
+                exit 1
+              fi
+              running="$(docker inspect -f '{{.State.Running}}' "$cid")"
+              restart_count="$(docker inspect -f '{{.RestartCount}}' "$cid")"
+              health_status="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$cid")"
+              if [ "$running" != "true" ]; then
+                echo "Service $svc is not running"
+                docker logs "$cid" || true
+                exit 1
+              fi
+              if [ "$restart_count" -gt 0 ]; then
+                echo "Service $svc restarted ($restart_count)"
+                docker logs "$cid" || true
+                exit 1
+              fi
+              if [ "$health_status" = "unhealthy" ]; then
+                echo "Service $svc is unhealthy"
+                docker logs "$cid" || true
+                exit 1
+              fi
+            done
+            sleep 5
+          done
+      - id: dump-logs-on-failure
+        if: failure()
+        name: Dump compose logs
+        run: docker compose logs --no-color
+
+      - id: compose-down
+        if: always()
+        name: Cleanup compose stack
+        run: docker compose down -v --remove-orphans
+
+  commitlint:
+    name: Commitlint
+    runs-on: ubuntu-latest
+    needs: run-checks
+    steps:
+      - id: checkout
+        name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - id: setup-node
+        name: Setup node with pnpm
+        uses: pnpm/setup@v3
+        with:
+          runtime: node@${{ needs.run-checks.outputs.NODE_VERSION }}
+          cache: true
+
+      - id: run-commitlint
+        name: Lint all commit messages in PR
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -eu
+          pnpm commitlint --from "${BASE_SHA}" --to "${HEAD_SHA}"

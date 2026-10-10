@@ -17,16 +17,34 @@
     {
       "matchDepTypes": ["peerDependencies"],
       "enabled": false
-//    },
-//    {
-//      "matchUpdateTypes": ["patch"],
-//      "automerge": true,
-//      "automergeType": "pr",
-//      "ignoreTests": false
-//    },
-//    {
-//      "matchUpdateTypes": ["major"],
-//      "labels": ["UPDATE-MAJOR"]
+    },
+    {
+      "matchFileNames": ["**/Dockerfile"],
+      "labels": ["docker-tag"],
+      "semanticCommitScope": "docker"    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "semanticCommitType": "chore"
+    },
+    {
+      "matchDepTypes": ["dependencies"],
+      "semanticCommitType": "fix"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "labels": ["github-actions"],
+      "semanticCommitType": "ci",
+      "semanticCommitScope": "github-actions"
+    },
+    {
+      "matchFileNames": ["**/Dockerfile"],
+      "labels": ["docker-tag"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "docker"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["UPDATE-MAJOR"]
     }
   ]
 }
