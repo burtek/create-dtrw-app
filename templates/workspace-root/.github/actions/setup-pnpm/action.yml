@@ -1,0 +1,17 @@
+name: Setup pnpm
+description: Setup pnpm taking node version from package.json
+
+runs:
+  using: composite
+  steps:
+    - id: get-node-version
+      shell: bash
+      run: |
+        version=$(jq -r .engines.node package.json)
+        echo "version=$version" >> $GITHUB_OUTPUT
+    - id: setup-node
+      name: Setup node with pnpm
+      uses: pnpm/setup@v3
+      with:
+        runtime: node@${{ steps.get-node-version.outputs.version }}
+        cache: true

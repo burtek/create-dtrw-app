@@ -19,10 +19,6 @@
       "enabled": false
     },
     {
-      "matchFileNames": ["**/Dockerfile"],
-      "labels": ["docker-tag"],
-      "semanticCommitScope": "docker"    },
-    {
       "matchDepTypes": ["devDependencies"],
       "semanticCommitType": "chore"
     },

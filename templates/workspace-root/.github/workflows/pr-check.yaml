@@ -112,10 +112,7 @@ jobs:
 
       - id: setup-node
         name: Setup node with pnpm
-        uses: pnpm/setup@v3
-        with:
-          runtime: node@${{ needs.run-checks.outputs.NODE_VERSION }}
-          cache: true
+        uses: ./.github/actions/setup-pnpm
 
       - id: run-commitlint
         name: Lint all commit messages in PR
