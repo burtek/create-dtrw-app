@@ -26,7 +26,7 @@ ENV VITE_COMMIT=$COMMIT_SHA
 
 RUN pnpm build
 
-FROM nginx:1.31.6-alpine AS runtime
+FROM nginx:1.31.7-alpine AS runtime
 
 # envsubst trick to escape nginx variables
 ENV DOLLAR='$'
