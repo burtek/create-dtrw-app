@@ -1,0 +1,23 @@
+name: Publish version
+
+on:
+  push:
+    tags:
+      - v*
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
+        with:
+            runtime: node@26
+            cache: true
+      - run: pnpm publish
