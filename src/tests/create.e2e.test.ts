@@ -82,8 +82,8 @@ describe('creating new project', () => {
             'create-dtrw-app': {
                 generatorVersion: packageJson.version,
                 templatesUsed: {
-                    ui: 'reactjs',
-                    api: 'nodejs'
+                    ui: `reactjs@${packageJson.version}`,
+                    api: `nodejs@${packageJson.version}`
                 }
             }
         });
@@ -130,8 +130,8 @@ describe('creating new project', () => {
             'create-dtrw-app': {
                 generatorVersion: packageJson.version,
                 templatesUsed: {
-                    frontend: 'reactjs',
-                    backend: 'nodejs'
+                    frontend: `reactjs@${packageJson.version}`,
+                    backend: `nodejs@${packageJson.version}`
                 }
             }
         });
@@ -179,9 +179,9 @@ describe('creating new project', () => {
             'create-dtrw-app': {
                 generatorVersion: packageJson.version,
                 templatesUsed: {
-                    frontend: 'reactjs',
-                    backend: 'nodejs',
-                    admin: 'reactjs'
+                    frontend: `reactjs@${packageJson.version}`,
+                    backend: `nodejs@${packageJson.version}`,
+                    admin: `reactjs@${packageJson.version}`
                 }
             }
         });
