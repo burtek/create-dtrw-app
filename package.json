@@ -27,7 +27,9 @@
   },
   "files": [
     "dist",
-    "templates"
+    "templates",
+    "templates/*/.env",
+    "templates/*/.env.*"
   ],
   "scripts": {
     "build": "tsdown",
@@ -43,5 +45,8 @@
   "engines": {
     "node": ">=24",
     "pnpm": ">=8"
+  },
+  "repository": {
+    "url": "https://github.com/burtek/create-dtrw-app"
   }
 }
