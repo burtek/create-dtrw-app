@@ -20,4 +20,4 @@ jobs:
         with:
             runtime: node@26
             cache: true
-      - run: pnpm publish
+      - run: pnpm publish --provenance --access public --no-git-checks
