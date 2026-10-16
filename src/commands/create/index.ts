@@ -27,7 +27,9 @@ export async function executeCreate(
     logger.debug('writing generator metadata to root package.json');
     const rootPkgJson = join(context.paths.projectRoot, 'package.json');
     const pkgJson = JSON.parse(await readFile(rootPkgJson, 'utf8'));
-    pkgJson['create-dtrw-app'].templatesUsed = Object.fromEntries(presetsToInclude);
+    pkgJson['create-dtrw-app'].templatesUsed = Object.fromEntries(
+        presetsToInclude.map((([name, tmpl]) => [name, `${tmpl}@${context.generator.version}`] as const))
+    );
     await writeFile(rootPkgJson, JSON.stringify(pkgJson, undefined, 2), 'utf8');
 
     const userAgent = process.env.npm_config_user_agent?.split(' ')[0];
