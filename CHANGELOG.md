@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.4.0](https://github.com/burtek/create-dtrw-app/compare/v1.3.3...v1.4.0) (2026-10-16)
+
+### Features
+
+* move healthchecks to Dockerfiles ([cfd8094](https://github.com/burtek/create-dtrw-app/commit/cfd80948b3550ef5aed40f7158bed93e7e05af7c))
+* store template version used in root package.json ([33ed843](https://github.com/burtek/create-dtrw-app/commit/33ed843d351a5771a729de9661f7299859fd47b6))
+* **workspace-root:** migrate to release-please ([5bd1d11](https://github.com/burtek/create-dtrw-app/commit/5bd1d11d6a0b0ad2efdeaa311231016aaba43f71))
+
+### Bug Fixes
+
+* **deps:** update deps ([d50fb41](https://github.com/burtek/create-dtrw-app/commit/d50fb41be479ce8bbdcee3009141306f89c5eff9))
+* **template-deps:** update nginx docker tag to v1.31.7 ([#22](https://github.com/burtek/create-dtrw-app/issues/22)) ([285d3dd](https://github.com/burtek/create-dtrw-app/commit/285d3ddf36d426f8219c1f746d8390b4855d6c55))
+* **template-deps:** update node.js to v26.12.0 ([#16](https://github.com/burtek/create-dtrw-app/issues/16)) ([9840e60](https://github.com/burtek/create-dtrw-app/commit/9840e603aff67154433e69f5a54e48ed9dbf8b9d))
+* upgrade node version ([83f801d](https://github.com/burtek/create-dtrw-app/commit/83f801d34548f1c9d6b41cea561d92be04989006))
+
 ## [1.3.3](https://github.com/burtek/create-dtrw-app/compare/v1.3.2...v1.3.3) (2026-09-22)
 
 ### Bug Fixes
