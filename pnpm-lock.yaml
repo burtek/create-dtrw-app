@@ -168,7 +168,7 @@ importers:
     dependencies:
       '@commander-js/extra-typings':
         specifier: ^15.0.0
-        version: 15.0.0(commander@15.0.0)
+        version: 15.1.0(commander@15.0.0)
       commander:
         specifier: ^15.0.0
         version: 15.0.0
@@ -209,10 +209,10 @@ importers:
 
 packages:
 
-  '@commander-js/extra-typings@15.0.0':
-    resolution: {integrity: sha512-yeJlba62xqmkgELUsn7356MEnzLLu/fw2x4lofFqGnXh6YysRdEs2BaLeLtg1+KU0AXvMeqQvTTp+3hBEBK+EA==}
+  '@commander-js/extra-typings@15.1.0':
+    resolution: {integrity: sha512-FsI7l5tFON52RyyDKyCkvwFl+peHZuP5TZ7AhxbDFGo/5T6KQd4+KE48aJ8jrDSSAQDvZ8hYKX47fmwZ5bGFNw==}
     peerDependencies:
-      commander: ~15.0.0
+      commander: ~15.1.0
 
   '@conventional-changelog/git-client@3.1.0':
     resolution: {integrity: sha512-Tqa/gHco2WJWa740NRjOrfKVvzIqxkZpecb8bemaQ8sKM5PXb1UK4uTyTb/1wIqNuOVaDOFxyBdhTIQZn6gdjQ==}
@@ -1332,7 +1332,7 @@ packages:
 
 snapshots:
 
-  '@commander-js/extra-typings@15.0.0(commander@15.0.0)':
+  '@commander-js/extra-typings@15.1.0(commander@15.0.0)':
     dependencies:
       commander: 15.0.0
 
